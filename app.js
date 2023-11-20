@@ -23,8 +23,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "frontend/build")));
 
-app.get("/", async (req, res) => {
-  const prompt = "Top 2 agents based on closed amount"
+app.post("/api", async (req, res) => {
+  const prompt = req.body.prompt
   const completion = await openai.chat.completions.create({
     messages: [
       {
@@ -35,7 +35,7 @@ app.get("/", async (req, res) => {
       # Agents(AGENT_CODE, AGENT_NAME, WORKING_AREA, COMMISSION, PHONE_NO, COUNTRY) 
       # Customer(CUST_CODE, CUST_NAME, CUST_CITY, WORKING_AREA, CUST_COUNTRY, GRADE, OPENING_AMT, RECEIVE_AMT, PAYMENT_AMT, OUTSTANDING_AMT, PHONE_NO, AGENT_CODE) 
       # orders (ORD_NUM, ORD_AMOUNT, ADVANCE_AMOUNT, ORD_DATE, CUST_CODE, AGENT_CODE, ORD_DESCRIPTION) 
-      ### ${prompt}`},
+      ### ${prompt} SELECT`},
     ],
     model: "gpt-3.5-turbo-1106",
     response_format: { type: "json_object" },
@@ -44,19 +44,14 @@ app.get("/", async (req, res) => {
   const sql = JSON.parse(completion.choices[0].message.content).sql;
   console.log(sql)
   if (sql == null) {
-    res.statusCode(502)
     res.send({error: "Failed to generate SQL query"})
   }
 
   dbConnection.query(sql, (error, result, fields) => {
     if (error) {
-      // res.statusCode(502)
-      console.log(error)
-      // res.send({error:`Failed to query result:${error.message}`})
-      // res.send({error:`Failed to query result:${error.message}`})
+      res.send({error:`Failed to query result:${error.message}`})
     } else {
-      console.log(result)
-      console.log(fields)
+      res.send(JSON.stringify(result))
     }
   })
 })
