@@ -1,0 +1,34 @@
+{
+  "name": "datawisdomai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prettier": "prettier -c ./",
+    "lint": "eslint --fix --ext .js ./",
+    "checkstyle": "npm run lint && npm run prettier",
+    "build": "npm run prebuild && npm run checkstyle && cd frontend && npm install && npm run build",
+    "prebuild": "rm -rf frontend/build",
+    "start": "node ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fengruigan/DataWisdomAI.git"
+  },
+  "author": "Fengrui Gan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fengruigan/DataWisdomAI/issues"
+  },
+  "homepage": "https://github.com/fengruigan/DataWisdomAI#readme",
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.1.0"
+  }
+}

@@ -1,0 +1,6 @@
+# Markdown files
+*.md
+
+# Artifacts
+build
+coverage
