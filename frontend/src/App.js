@@ -39,6 +39,7 @@ function App() {
           {messages.length != 0 && messages.map((message, idx) => <Message content={message} key={idx}/>
           )}
           {loading && <div id="loader"><Spinner animation="border"/></div>}
+          {/* TODO (out of time): add error element to notify user here */}
         </div>
         <InputGroup className="mt-1">
           <InputGroup.Text>@</InputGroup.Text>
